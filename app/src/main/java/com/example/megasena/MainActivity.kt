@@ -19,9 +19,6 @@ class MainActivity : AppCompatActivity() {
         val txtResult: TextView = findViewById(R.id.txt_result)
         val btnGenerate: Button = findViewById(R.id.btn_generate)
 
-//        btnGenerate.setOnClickListener(buttonClickListener)
-
-//      3 option
         btnGenerate.setOnClickListener {
             val text = editText.text.toString()
             numberGenerator(text, txtResult)
@@ -56,21 +53,4 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-//  2 option - setOnClickListener
-//    val buttonClickListener = View.OnClickListener {
-//        Log.i("New Number", editText.text.toString())
-//    }
-
-//    val buttonClickListener = object: View.OnClickListener {
-//        override fun onClick(p0: View?) {
-//            Log.i("New Number", editText.text.toString())
-//        }
-//    }
-
-//    1 option - xml
-//    fun buttonClicked(view: View) {
-//        val newNumber = editText.text
-//        Log.i("New Number", newNumber.toString())
-//        txtResult.text = newNumber
-//    }
 }
