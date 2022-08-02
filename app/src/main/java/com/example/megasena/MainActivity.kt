@@ -27,6 +27,7 @@ class MainActivity : AppCompatActivity() {
         val editText: EditText = findViewById(R.id.edit_number)
         val txtResult: TextView = findViewById(R.id.txt_result)
         val btnGenerate: Button = findViewById(R.id.btn_generate)
+        val btnDelete: Button = findViewById(R.id.btn_delete)
 
 //        if (preferences.all.isNotEmpty()) {
 //            val prevNumList: String? = preferences.getString("result", null)
@@ -44,6 +45,16 @@ class MainActivity : AppCompatActivity() {
         btnGenerate.setOnClickListener {
             val text = editText.text.toString()
             numberGenerator(text, txtResult)
+        }
+
+        btnDelete.setOnClickListener {
+            if (preferences.all.isNotEmpty()) {
+                with(preferences.edit()) {
+                    clear()
+                    apply()
+                }
+            }
+            txtResult.text = ""
         }
     }
 
