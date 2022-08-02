@@ -21,16 +21,25 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        preferences = getSharedPreferences("db", Context.MODE_PRIVATE)
+//        preferences = getSharedPreferences("db", Context.MODE_PRIVATE)
+        preferences = getPreferences(Context.MODE_PRIVATE) ?: return
 
         val editText: EditText = findViewById(R.id.edit_number)
         val txtResult: TextView = findViewById(R.id.txt_result)
         val btnGenerate: Button = findViewById(R.id.btn_generate)
 
-        if (preferences.all.isNotEmpty()) {
-            val prevNumList: String? = preferences.getString("result", null)
-            txtResult.text = "Última aposta: $prevNumList"
-        }
+//        if (preferences.all.isNotEmpty()) {
+//            val prevNumList: String? = preferences.getString("result", null)
+//            txtResult.text = "Última aposta: $prevNumList"
+//        }
+
+        // alternativa
+
+        val result: String? = preferences.getString("result", null)
+
+        result?.let {
+            txtResult.text = "Última aposta: $it"
+        } // irá analisar se o valor é null ou nao, se nao for entra no escopo
 
         btnGenerate.setOnClickListener {
             val text = editText.text.toString()
@@ -64,9 +73,21 @@ class MainActivity : AppCompatActivity() {
 
                 txtResult.text = stringResult
 
-                val editor = preferences.edit() // instanciando o editor
-                editor.putString("result", stringResult) // colocando os dados na estrut de dados, usando uma key e value
-                editor.apply()
+//                val editor = preferences.edit() // instanciando o editor
+//                editor.putString("result", stringResult) // colocando os dados na estrut de dados, usando uma key e value
+//                editor.apply()
+
+                // alternativas
+
+//                preferences.edit().apply {
+//                    putString("result", stringResult)
+//                    apply()
+//                }
+
+                with (preferences.edit()) {
+                    putString("result", stringResult)
+                    apply()
+                }
 
             }
         }
