@@ -1,5 +1,7 @@
 package com.example.megasena
 
+import android.content.Context
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -8,16 +10,27 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.edit
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
+
+    private lateinit var preferences: SharedPreferences
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        preferences = getSharedPreferences("db", Context.MODE_PRIVATE)
+
         val editText: EditText = findViewById(R.id.edit_number)
         val txtResult: TextView = findViewById(R.id.txt_result)
         val btnGenerate: Button = findViewById(R.id.btn_generate)
+
+        if (preferences.all.isNotEmpty()) {
+            val prevNumList: String? = preferences.getString("result", null)
+            txtResult.text = "Última aposta: $prevNumList"
+        }
 
         btnGenerate.setOnClickListener {
             val text = editText.text.toString()
@@ -47,7 +60,13 @@ class MainActivity : AppCompatActivity() {
                     listOfNumbers.add(number + 1)
                 }
 
-                txtResult.text = listOfNumbers.joinToString(" - ")
+                val stringResult = listOfNumbers.joinToString(" - ")
+
+                txtResult.text = stringResult
+
+                val editor = preferences.edit() // instanciando o editor
+                editor.putString("result", stringResult) // colocando os dados na estrut de dados, usando uma key e value
+                editor.apply()
 
             }
         }
